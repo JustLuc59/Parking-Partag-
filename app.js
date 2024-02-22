@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour gérer la réservation
     function reserveSeats() {
       if (selectedSeatCount == 1) {
-        statusMessage.innerText = 'Places réservées !';
+        statusMessage.innerText = 'Places réservées : ' + text;
         text = document.getElementsByClassName('selected')[0].textContent;
-        alert("place réservé "+text);
+        //alert("place réservé "+text);
         statusMessage.style.color = 'green';
         // Vous pouvez ajouter ici la logique pour enregistrer les places réservées.
       } else {

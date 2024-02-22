@@ -1,0 +1,348 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
+
+/*CSS exclusive of Header.php {*/
+	.header {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  padding: 1rem;
+	  padding-top: 0px;
+		padding-bottom: 0px;
+		height: 150px;
+	}
+	.tableheader{
+		padding-left:40px;
+	}
+	.header2{
+		display:none;
+	}
+/*}*/
+
+/*CSS in Common {*/
+	a{
+		text-decoration:none;
+		color:black;
+	}
+	.form{
+		margin-left: 12%;
+		width: 75%;
+		padding: 30px;
+		border: 1px solid #f1f1f1;
+		background: #f8f7f4;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+		border-radius: 10px;
+		text-align:center;
+	}
+	.input-button{
+		border-radius:20px;
+		background-color: #E7E7E7;
+		padding:10px;
+		padding-left:20px;
+		padding-right:20px;
+		border:solid black;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	}
+
+	.input-button:hover{
+		cursor:pointer;
+		color:white;
+		background-color:black;
+	}
+
+	input{
+		border:none;
+		background-color:#f8f7f4;
+	}
+
+	.text-input{
+		border-bottom-style:solid;
+		color:black;
+		
+	}
+
+	select{
+		border:none;
+		background-color:#f8f7f4;
+		border-bottom-style:solid;
+		color:black;
+	}
+
+	select:hover{
+		cursor:pointer;
+	}
+	.title{
+		text-align:center;
+	}
+
+	.subtitle{
+		align-items:center;
+		text-align:center;
+
+	}
+	td{
+		padding:10px;
+	}
+/*}*/
+
+/*CSS exclusive of the body{*/
+	body {
+	  margin: 50px;
+	  background-color:white;
+	}
+/*}*/
+
+/*CSS exclusive of Home.php{*/
+	.info-box{
+		align-items:center;
+		text-align:center;
+		border-style:dashed;
+		border-color:black;
+		padding:50px;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	}
+	.link{
+		text-align:center;
+	}
+/*}*/
+
+/*CSS exclusive of Connection_regisyer.php {*/
+	.connection_registration_forms{
+		margin-left: 100px;
+		margin-right: 200px;
+		width: 75%;
+		padding: 30px;
+		border: 1px solid #f1f1f1;
+		background: #f8f7f4;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+		border-radius: 10px;
+	}
+/*}*/
+
+/*CSS exclusive of Mission.php{*/
+	.table1{
+		border:solid grey;
+		text-align:center;
+		margin-left:28%;
+	}
+	.table2{
+		border:solid grey;
+		text-align:center;
+		margin-left:30%;
+	}
+	.tr{
+		border:solid grey;
+		padding:10px;
+	}
+
+	.td{
+		border:solid grey;
+		padding:10px;
+	}
+
+	.th{
+		border:solid grey;
+		padding:10px;
+	}
+/*}*/
+
+/*CSS exclusive of Game.php {*/
+	.table3{
+		border:solid grey;
+		text-align:center;
+		margin-left:40%;
+	}
+	.sudokuplacement{
+		margin-left: 40%;
+		margin-top: 5%;
+	}
+	.creatorplace{
+		position:absolute;
+		bottom:35%;
+		text-align: center;
+		padding:50px;
+	}	
+	.input_sudoku{
+		width:30px;
+		height:30px;
+		color:blue;
+		background-color:white;
+		border: 1px solid black;
+		border-radius:5px;
+		margin-left:2px;
+	}
+	.input_sudoku:hover{
+		cursor:pointer;
+		background-color:black;
+		color:white;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	}
+	.input_sudoku_0{
+		width:30px;
+		height:30px;
+		color:white;
+		background-color:white;
+		border: 1px solid black;
+		border-radius:5px;
+		margin-left:2px;
+	}
+	.input_sudoku_0:hover{
+		cursor:pointer;
+		background-color:black;
+		color:black;
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	}
+	
+/*}*/
+
+/*CSS exclusive to display the level in Community_sudoku.php and Profile.php {*/
+	.sudoku-section{
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 3rem 5rem;
+		padding: 5rem 0;
+		margin: 0 1.5rem;
+		border-top: 4px solid #CCC;
+		background-color:white;
+	}
+
+	.sudoku-container {
+	  display: flex;
+	  flex-direction: column;
+	  
+	}
+
+	.user-icon{
+		margin-left: 150px;
+		border-radius: 50%;
+		width: 36px;
+		height: 36px;
+		background-color: #AAA;
+		position:relative;
+		top:10px;
+	}
+
+	.user-profil{
+	  margin-bottom: .1rem;
+	  color:grey;
+	  text-decoration: underline;
+	  transition: color 150ms;
+	}
+
+	.user-profil:hover {
+	  color: #111;
+	}
+/*}*/
+
+/*CSS exclusive of the Chatbox {*/
+	.display-separator{
+		padding-top:20px;
+		border-top-style:solid;
+		border-top-color:grey;
+		border-top-width:2px;
+		
+	}
+
+	.chat{
+		margin-left:10%;
+		padding-right:25%;
+		padding-left:25%;
+		padding-top:10px;
+		padding-bottom:10px;
+		text-align:center;
+	}
+/*}*/
+
+/*CSS exclusive of Profile.php {*/
+	.table{
+		text-align:center;
+		margin-left:40%;
+	}
+
+	.user-icon-profil{
+		margin-left: 700px;
+		border-radius: 50%;
+		width: 36px;
+		height: 36px;
+		background-color: #AAA;
+		position:relative;
+		bottom:50px;
+	}
+/*}*/
+
+/*CSS exclusive of Ranking.php {*/
+.tableR{
+	text-align:center;
+	margin-left:25%;
+}
+/*}*/
+
+/*CSS exclusive for phone version (Viewport) {*/
+@media only screen and (max-width:600px){
+	 body{
+		margin:0;
+	 }
+	 
+	 .tabheader{
+		margin:0;
+	 }
+	 .tableheader{
+		 padding:5px;
+		 width:10%;
+	 }
+	 
+	 iframe{
+		width:100%;
+		height:100%;
+	 }
+	 
+	 .form{
+		 margin:0;
+		 width:100%;
+	 }
+	 .tabheader{
+		 display:none;
+	 }
+	 .header2{
+		 display:block;
+	 }
+	 .table1{
+		 margin:0;
+	 }
+	 .table2{
+		 margin:0;
+	 }
+	 .tableR{
+		 margin:0;
+	 }
+	 .chat{
+		 margin:0;
+		 padding:0;
+	 }
+	 .user-icon-profil{
+		 margin-left:75%;
+	 }
+	 .table{
+		 margin-left:15%;
+	 }
+	 .sudoku-section{
+		margin-left:65px;
+	}
+	.sudokuplacement{
+		margin-left:60px;
+	}
+	.creatorplace{
+	display:none;
+	}
+	.table3{
+		margin-left:10%;
+	}
+	.formreg{
+		margin:0;
+		width:100%;
+	}
+}
+/*}*/
