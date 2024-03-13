@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 40px;
+    text-align: center;
+}
+
+
+footer {
+    background-color: #34495e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+h1{
+    text-align: center;
+}
+
+#Placeholder{
+    width: auto;
+    height: 250px;
+    background: green;
+    
+}
+.test{
+    border:solid black;
+    box-shadow: black;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+
+.menu {
+    background-color: #3498db;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    position: relative;
+    display: inline-block;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu ul li:hover > ul {
+    display: block;
+}
+
+.menu ul ul {
+    display: none;
+    position: absolute;
+    background-color: #2980b9;
+    min-width: 200px;
+    z-index: 1;
+}
+
+.menu ul ul li {
+    display: block;
+}
+
+.menu ul ul li a {
+    padding: 10px 20px;
+}
+
+.menu ul ul ul {
+    left: 100%;
+    top: 0;
+}
