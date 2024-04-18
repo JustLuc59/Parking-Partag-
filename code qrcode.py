@@ -61,7 +61,7 @@ def generer_et_enregistrer_qr_code(connexion):
 	img = qr.make_image(fill_color="black", back_color="white")
 
 	# Spécifier le chemin du dossier où vous souhaitez enregistrer le QR code
-	dossier = r'C:\Users\arthu\Documents\qrcode'
+	dossier = r'/home/goldo/Documents/qrcodes'
 
 	# Assurer que le dossier existe, sinon le créer
 	if not os.path.exists(dossier):
@@ -101,5 +101,3 @@ def generer_et_enregistrer_qr_code(connexion):
 
 # Lancer la surveillance des changements dans la base de données
 surveiller_changements()
-
-
