@@ -4,94 +4,102 @@ import random
 import string
 import mysql.connector
 from PIL import Image
+import time
 
 # Fonction pour générer une clé unique
 def generer_cle(longueur):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=longueur))
+	return ''.join(random.choices(string.ascii_letters + string.digits, k=longueur))
 
 # Fonction pour obtenir le prochain nom de fichier unique
 def obtenir_prochain_nom_fichier(dossier, nom_fichier):
-    nom_base, extension = os.path.splitext(nom_fichier)
-    i = 1
-    nouveau_nom_fichier = nom_fichier
-    while os.path.exists(os.path.join(dossier, nouveau_nom_fichier)):
-        nouveau_nom_fichier = f"{nom_base}_{i}{extension}"
-        i += 1
-    return nouveau_nom_fichier
+	nom_base, extension = os.path.splitext(nom_fichier)
+	i = 1
+	nouveau_nom_fichier = nom_fichier
+	while os.path.exists(os.path.join(dossier, nouveau_nom_fichier)):
+    	nouveau_nom_fichier = f"{nom_base}_{i}{extension}"
+    	i += 1
+	return nouveau_nom_fichier
 
-# Générer une clé unique
-cle_qr = generer_cle(10)
+# Fonction pour surveiller les changements dans la base de données
+def surveiller_changements():
+	while True:
+    	# Connexion à la base de données MySQL
+    	connexion = mysql.connector.connect(
+        	host='192.168.234.249',
+        	user='admin',
+        	password='tssnadmin',
+        	database='Projet'
+    	)
 
-# Connexion à la base de données MySQL
-hote = '192.168.30.249'
-base_de_donnees = 'test'
-utilisateur = 'admin'
-mot_de_passe = 'tssnadmin'
+    	curseur = connexion.cursor()
+    	curseur.execute("SELECT creation FROM inscription WHERE id = 1")
+    	creation = curseur.fetchone()[0]
+    	curseur.close()
 
-connexion = mysql.connector.connect(
-    host=hote,
-    user=utilisateur,
-    password=mot_de_passe,
-    database=base_de_donnees
-)
+    	if creation == 1:
+        	connexion = generer_et_enregistrer_qr_code(connexion)
+        	# Attente avant la prochaine vérification
+        	time.sleep(20)
+    	else:
+        	# Attente avant la prochaine vérification
+        	time.sleep(20)
 
-# Créer le curseur pour exécuter des requêtes SQL
-curseur = connexion.cursor()
+# Fonction pour générer et enregistrer le QR code
+def generer_et_enregistrer_qr_code(connexion):
+	# Générer une clé unique
+	cle_qr = generer_cle(10)
 
-# Créer une table pour stocker les informations du code QR si elle n'existe pas déjà
-curseur.execute('''CREATE TABLE IF NOT EXISTS codes_qr (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    cle VARCHAR(255),
-                    nom_image VARCHAR(255)
-                )''')
+	# Créer le code QR avec les données uniques
+	qr = qrcode.QRCode(version=3,
+                   	error_correction=qrcode.constants.ERROR_CORRECT_H,
+                   	box_size=100,
+                   	border=1)
+	qr.add_data(cle_qr)
+	qr.make(fit=True)
 
-# Insérer la clé dans la base de données
-requete_insertion = "INSERT INTO codes_qr (cle) VALUES (%s)"
-valeurs = (cle_qr,)
-curseur.execute(requete_insertion, valeurs)
-connexion.commit()
+	# Générer l'image du code QR
+	img = qr.make_image(fill_color="black", back_color="white")
 
-# Obtenir le dernier ID inséré
-dernier_id = curseur.lastrowid
+	# Spécifier le chemin du dossier où vous souhaitez enregistrer le QR code
+	dossier = r'C:\Users\arthu\Documents\qrcode'
 
-# Créer le code QR avec les données uniques
-qr = qrcode.QRCode(version=3,
-                    error_correction=qrcode.constants.ERROR_CORRECT_H,
-                    box_size=100,
-                    border=1)
-qr.add_data(cle_qr)
-qr.make(fit=True)
+	# Assurer que le dossier existe, sinon le créer
+	if not os.path.exists(dossier):
+    	os.makedirs(dossier)
 
-# Générer l'image du code QR
-img = qr.make_image(fill_color="black", back_color="white")
+	# Obtenir le dernier ID inséré dans la table codes_qr
+	curseur = connexion.cursor()
+	curseur.execute("SELECT MAX(id) FROM codes_qr")
+	dernier_id = curseur.fetchone()[0]+1
+	curseur.close()
 
-# Spécifier le chemin du dossier où vous souhaitez enregistrer le QR code
-dossier = r'C:\Users\arthu\Documents\qrcode'
+	# Nom du fichier QR code avec l'ID le plus récent
+	nom_fichier = f'qrcode_{dernier_id}.png'
 
-# Assurer que le dossier existe, sinon le créer
-if not os.path.exists(dossier):
-    os.makedirs(dossier)
+	# Chemin complet du fichier QR code
+	chemin_qr_code = os.path.join(dossier, nom_fichier)
 
-# Nom du fichier QR code
-nom_fichier = f'qrcode_{dernier_id}.png'
+	# Enregistrer l'image dans le dossier spécifié avec le nom spécifié
+	img.save(chemin_qr_code)
 
-# Obtenir le prochain nom de fichier unique
-nom_fichier = obtenir_prochain_nom_fichier(dossier, nom_fichier)
+	# Insérer la clé dans la table codes_qr
+	curseur = connexion.cursor()
+	requete_insertion = "INSERT INTO codes_qr (cle, nom_image) VALUES (%s, %s)"
+	valeurs_insertion = (cle_qr, nom_fichier)
+	curseur.execute(requete_insertion, valeurs_insertion)
+	connexion.commit()
 
-# Chemin complet du fichier QR code
-chemin_qr_code = os.path.join(dossier, nom_fichier)
+	# Mettre à jour la valeur de la colonne creation à 0 dans la table inscription
+	curseur.execute("UPDATE inscription SET creation = 0 WHERE id = 1")
+	connexion.commit()
+	curseur.close()
 
-# Enregistrer l'image dans le dossier spécifié avec le nom spécifié
-img.save(chemin_qr_code)
+	# Afficher le chemin du fichier enregistré
+	print("QR code enregistré sous :", chemin_qr_code)
 
-# Mettre à jour la base de données avec le nom de l'image correspondant
-requete_mise_a_jour = "UPDATE codes_qr SET nom_image = %s WHERE id = %s"
-valeurs_mise_a_jour = (nom_fichier, dernier_id)
-curseur.execute(requete_mise_a_jour, valeurs_mise_a_jour)
-connexion.commit()
+	return connexion
 
-# Fermer la connexion à la base de données
-connexion.close()
+# Lancer la surveillance des changements dans la base de données
+surveiller_changements()
 
-# Afficher le chemin du fichier enregistré
-print("QR code enregistré sous :", chemin_qr_code)
+
