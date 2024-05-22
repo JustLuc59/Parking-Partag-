@@ -35,6 +35,7 @@
                             <th>PLACE</th>
                             <th>UTILISATEUR</th>
                             <th>DATE</th>
+                            <th>ETAT</th>
                             <th>DEL</th>
                         </tr>';
                     // Récupérer la première ligne de résultat
@@ -50,6 +51,20 @@
                             <td>'.$place.'</td>
                             <td>'.$nom.'</td>
                             <td>'.$date.'</td>';?>
+                           <td><?php 
+                                $sql2="SELECT * FROM PARKING WHERE VILLE ='$PARKING' AND PLACE ='$place'";
+                                $result2 = $conn->query($sql2);
+                                $row2 = $result2->fetch_assoc();
+
+                                $state=$row2["STATE"];
+                                //echo $state;
+                                if($state==1){
+                                    echo "réservé";
+                                }else{
+                                    echo "occupé";
+                                }                  
+                            
+                            ?></td>
                             <td><a href="delreserv.php?id=<?php echo $row['ID'];?>&amp;place=<?php echo $row["NUMPLACE"];?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');"><button>DEL</button></a></td>
                         <?php echo '</tr>';
                 }

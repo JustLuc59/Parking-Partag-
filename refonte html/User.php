@@ -20,7 +20,11 @@
             <?php echo'<h2>'.$_SESSION["name"].'</h2>'; 
             echo"<p>Email: ".$_SESSION["mail"]."</p>";
             echo"<p>Téléphone: ".$_SESSION["tel"]."</p>";
-            echo"<p>Ville: ".$_SESSION["ville"]."</p>" ?>
+            echo"<p>Ville: ".$_SESSION["ville"]."</p>" ;
+            echo"<p>Imatriculation: ".$_SESSION["Imat"]."</p>";
+            ?>
+            <a href="modifier.php">Modifier Information</a>
+            <a href="#">QRCode</a>
         </div>
     </div>
 

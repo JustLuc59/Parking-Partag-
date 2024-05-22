@@ -7,25 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let selectedSeatCount = 0;
     
-    function getReservedSeats() {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "getReserved.php", true);
-      xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-              // Analyser les données JSON récupérées
-              const reservedSeats = JSON.parse(xhr.responseText);
-              
-              // Mettre à jour l'apparence des places déjà réservées en rouge
-              seats.forEach(function(seat) {
-                  if (reservedSeats.includes(seat.textContent)) {
-                      seat.classList.add('reserved');
-                  }
-              });
-          }
-      };
-      xhr.send();
-  }
-  getReservedSeats();
     
     // Fonction pour mettre à jour le nombre de places sélectionnées
     function updateSelectedSeatCount() {

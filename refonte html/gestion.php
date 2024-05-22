@@ -9,7 +9,7 @@
 <body>
     <header>
         <?php include("header.php"); 
-        if(!isset($_SESSION["name"])){
+        if($_SESSION["admin"]==0){
       header('Location: home.php');
     }?>
     </header>

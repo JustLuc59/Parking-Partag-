@@ -35,6 +35,20 @@ h1{
     
 }
 
+.logo{
+    color: white;
+    text-decoration: none;
+
+}
+
+.ppuser{
+    width: 3%;
+    height: 3%;
+    position:relative;
+    left: 49%;
+    bottom:10%;
+}
+
 
 .login-container {
     max-width: 400px;
@@ -360,6 +374,13 @@ h2 {
     th {
         background-color: #3498db;
         color: white;
+    }
+    .ppuser{
+        width: 3%;
+        height: 3%;
+        position:relative;
+        left: 49%;
+        bottom:10%;
     }
   }
   

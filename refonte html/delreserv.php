@@ -1,12 +1,12 @@
 <?php
 session_start();
 // Inclure le fichier de connexion à la base de données
-$serv="localhost";
-	$user="root";
-	$mdp="admin";
-	$bdd="Projet";
+$serveur = "localhost";//$serveur = "192.168.234.249"; // Adresse du serveur MySQL
+$utilisateur = "root";//$utilisateur = "admin"; // Nom d'utilisateur MySQL
+$motdepasse = "admin";//$motdepasse = "tssnadmin"; // Mot de passe MySQL
+$bdd="Projet";
 	
-	$conn= new mysqli($serv,$user,$mdp,$bdd);
+	$conn= new mysqli($serveur,$utilisateur,$motdepasse,$bdd);
 
 // Vérifier si un ID de réservation est passé via la méthode GET
 if(isset($_GET['id']) && !empty($_GET['id'])) {

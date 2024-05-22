@@ -7,14 +7,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
+    echo $username ,',', $password,"/";
+
     // Paramètres de connexion à la base de données
-    $serveur = "localhost"; // Adresse du serveur MySQL
-    $utilisateur = "root"; // Nom d'utilisateur MySQL
-    $motdepasse = "admin"; // Mot de passe MySQL
-    $base_de_donnees = "Projet"; // Nom de la base de données MySQL
+    $serveur = "localhost";//$serveur = "192.168.234.249"; // Adresse du serveur MySQL
+    $utilisateur = "root";//$utilisateur = "admin"; // Nom d'utilisateur MySQL
+    $motdepasse = "admin";//$motdepasse = "tssnadmin"; // Mot de passe MySQL
+    $bdd="Projet";
 
     // Connexion à la base de données
-    $connexion = new mysqli($serveur, $utilisateur, $motdepasse, $base_de_donnees);
+    $connexion = new mysqli($serveur, $utilisateur, $motdepasse, $bdd);
 
     // Vérification de la connexion
     if ($connexion->connect_error) {
@@ -23,7 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Requête SQL pour vérifier les informations d'identification
     $sql = "SELECT * FROM Projet WHERE username='$username' AND password='$password'";
+    echo $sql;
     $resultat = $connexion->query($sql);
+    echo $resultat->num_rows ," test";
 
     // Vérifier si l'utilisateur existe dans la base de données
     if ($resultat->num_rows > 0) {

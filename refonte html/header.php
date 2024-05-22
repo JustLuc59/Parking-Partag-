@@ -1,10 +1,10 @@
 <?php 
-	$serv="localhost";
-	$user="root";
-	$mdp="admin";
+     $serveur = "localhost";//$serveur = "192.168.234.249"; // Adresse du serveur MySQL
+     $utilisateur = "root";//$utilisateur = "admin"; // Nom d'utilisateur MySQL
+     $motdepasse = "admin";//$motdepasse = "tssnadmin"; // Mot de passe MySQL
 	$bdd="Projet";
 	
-	$conn= new mysqli($serv,$user,$mdp,$bdd);
+	$conn= new mysqli($serveur,$utilisateur,$motdepasse,$bdd);
 	
 	if (!$conn) {
 	echo "Connection Error".mysqli_connect_errno();
@@ -15,8 +15,8 @@
     if(isset($_SESSION["name"])){
         $name=$_SESSION["name"];
         $sql="SELECT * FROM Projet WHERE username='$name'";
-
         $result = $conn->query($sql);
+        //echo $_SESSION['name'];
 
     if ($result->num_rows > 0) {
         // Récupérer la première ligne de résultat
@@ -26,6 +26,8 @@
         $_SESSION["mail"] = $row["mail"];
         $_SESSION["tel"] = $row["telephone"];
         $_SESSION["ville"] = $row["ville"];
+        $_SESSION["Imat"] = $row["IMAT"];
+        $_SESSION["password"] = $row["password"];
         $_SESSION["admin"] = $row["ADMIN"];
         // Vous pouvez stocker d'autres valeurs de la même manière
     } else {
@@ -34,7 +36,9 @@
     }
 ?>
 
-
+<?php if(isset($_SESSION["name"])){
+                	echo'<img class="ppuser" src="ppuser.png"/>';
+        }?>
 <h1>Réservez Votre Place de Parking</h1>
         <p>Facile, Rapide et Sécurisé</p>
         <nav class="menu">

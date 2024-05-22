@@ -20,7 +20,11 @@ $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 if ($row["STATE"] == 1) {
     // La place est déjà réservée
     echo  "Place déjà réservée";
-} else {
+}else if ($row["STATE"] == 2) {
+    // La place est déjà réservée
+    echo  "Place déjà occupé";
+}  
+else if ($row["STATE"] == 0){
     // La place est disponible, vous pouvez procéder à la réservation
     $sql = "INSERT INTO PLACE (NUMPLACE, USER, VILLE) VALUES ('$seatReserved','$name','$ville')";
     if ($conn->query($sql) === TRUE) {

@@ -26,6 +26,9 @@
       //echo $row["STATE"];
       //echo "<br>";
       if($row["STATE"]==1){
+        return 'background-color:orange';
+      }
+      if($row["STATE"]==2){
         return 'background-color:red';
       }
       else{

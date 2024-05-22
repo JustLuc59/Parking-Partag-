@@ -11,13 +11,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $IMAT= $_POST["Imat"];
 
     // Paramètres de connexion à la base de données
-    $serveur = "localhost"; // Adresse du serveur MySQL
-    $utilisateur = "root"; // Nom d'utilisateur MySQL
-    $motdepasse = "admin"; // Mot de passe MySQL
-    $base_de_donnees = "Projet"; // Nom de la base de données MySQL
+    $serveur = "localhost";//$serveur = "192.168.234.249"; // Adresse du serveur MySQL
+    $utilisateur = "root";//$utilisateur = "admin"; // Nom d'utilisateur MySQL
+    $motdepasse = "admin";//$motdepasse = "tssnadmin"; // Mot de passe MySQL
+   $bdd="Projet";
 
     // Connexion à la base de données
-    $connexion = new mysqli($serveur, $utilisateur, $motdepasse, $base_de_donnees);
+    $connexion = new mysqli($serveur, $utilisateur, $motdepasse, $bdd);
 
     // Vérification de la connexion
     if ($connexion->connect_error) {
@@ -36,7 +36,17 @@ if ($result_check_username->num_rows > 0) {
 
     if ($connexion->query($sql) === TRUE) {
         echo "Inscription réussie!";
+        $sql = "UPDATE inscription SET creation=1";
+        $connexion->query($sql);
         $_SESSION["name"] = $username;
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $longueurMax = strlen($caracteres);
+        $chaineAleatoire = '';
+        for ($i = 0; $i < 10; $i++)
+        {
+        $chaineAleatoire .= $caracteres[rand(0, $longueurMax - 1)];
+        }
+        //echo $chaineAleatoire;
         header("Location: home.php");
     } else {
         echo "Erreur lors de l'inscription : " . $connexion->error;
