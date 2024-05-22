@@ -1,96 +1,68 @@
-import mysql.connector
 import os
+import qrcode
+import mysql.connector
 import time
 
-# Fonction pour vérifier si la valeur de création de l'ID 1 est égale à 1 dans la table 'inscription'
-def check_creation_value():
-	# Nouvelle connexion à la base de données pour récupérer la valeur
-	new_db_connection = mysql.connector.connect(
-    	host="192.168.234.249",
-    	user="admin",
-    	password="tssnadmin",
-    	database="Projet"
+# Fonction pour obtenir les clés ajoutées depuis la dernière exécution du script
+def obtenir_nouvelles_cles(dernier_id):
+	connexion = mysql.connector.connect(
+    	host='192.168.47.249',
+    	user='admin',
+    	password='tssnadmin',
+    	database='Projet'
 	)
+	curseur = connexion.cursor()
+	requete = "SELECT id, valeur FROM chaine WHERE id > %s"
+	curseur.execute(requete, (dernier_id,))
+	nouvelles_cles = curseur.fetchall()
+	connexion.close()
+	return nouvelles_cles
 
-	new_cursor = new_db_connection.cursor()
-
-	# Requête pour récupérer la valeur de création de l'ID 1 dans la table 'renomage'
-	sql = "SELECT creation FROM renomage WHERE ID = 1"
-	new_cursor.execute(sql)
-	result = new_cursor.fetchone()
-
-	new_db_connection.close()
-
-	if result:
-    	# Si la valeur est égale à 1, retourne True, sinon False
-    	return result[0] == 1
+# Fonction pour créer un QR code pour une clé donnée
+def creer_qr_code(cle):
+	dossier = '/home/goldo/Documents/qrcodes'
+	if not os.path.exists(dossier):
+    	os.makedirs(dossier)
+    
+	nom_fichier = f'{cle}.png'
+	chemin_qr_code = os.path.join(dossier, nom_fichier)
+    
+	# Vérifier si le QR code existe déjà
+	if os.path.exists(chemin_qr_code):
+    	print(f"Le QR code pour la clé '{cle}' existe déjà.")
 	else:
-    	# Si aucun résultat n'est retourné, retourne False par défaut
-    	return False
+    	qr = qrcode.QRCode(
+        	version=3,
+        	error_correction=qrcode.constants.ERROR_CORRECT_H,
+        	box_size=100,  # Remis à 100
+        	border=1
+    	)
+    	qr.add_data(cle)
+    	qr.make(fit=True)
+    	img = qr.make_image(fill_color="black", back_color="white")
+   	 
+    	img.save(chemin_qr_code)
+    	print(f"QR code pour la clé '{cle}' créé sous : {chemin_qr_code}")
 
-# Fonction pour exécuter le code de renommage et de mise à jour de la base de données
-def execute_renaming():
-	# Répertoire contenant les fichiers qrcode
-	qrcode_directory = "/home/goldo/Documents/qrcodes"
+# Récupérer l'ID de la dernière clé traitée
+dernier_id_traite = 0
 
-	# Connexion à la base de données
-	mydb = mysql.connector.connect(
-    	host="192.168.234.249",
-    	user="admin",
-    	password="tssnadmin",
-    	database="Projet"
-	)
-
-	# Création du curseur
-	mycursor = mydb.cursor()
-
-	# Requête pour récupérer le premier username sans valeur dans la colonne cle
-	sql = "SELECT username FROM Projet2 WHERE cle IS NULL LIMIT 1"
-	mycursor.execute(sql)
-	result = mycursor.fetchone()
-
-	if result:
-    	username = result[0]
-    	# Vérifier si le fichier qrcode existe
-    	qrcode_files = [f for f in os.listdir(qrcode_directory) if f.startswith("qrcode_")]
-    	if qrcode_files:
-        	# Récupérer le premier fichier qrcode à renommer
-        	qrcode_filename = qrcode_files[0]
-        	old_qrcode_path = os.path.join(qrcode_directory, qrcode_filename)
-        	# Nouveau nom de fichier
-        	new_qrcode_filename = f"qr_{username}.png"
-        	new_qrcode_path = os.path.join(qrcode_directory, new_qrcode_filename)
-        	# Renommer le fichier qrcode
-        	os.rename(old_qrcode_path, new_qrcode_path)
-        	print(f"Le fichier {qrcode_filename} a été renommé en {new_qrcode_filename}.")
-
-        	# Mettre à jour la colonne cle dans la base de données
-        	sql_update_cle = "UPDATE Projet2 SET cle = %s WHERE username = %s"
-        	mycursor.execute(sql_update_cle, (new_qrcode_filename, username))
-        	mydb.commit()
-        	print(f"La colonne cle de l'utilisateur {username} a été mise à jour avec la valeur {new_qrcode_filename}.")
-    	else:
-        	print("Aucun fichier 'qrcode_' trouvé dans le répertoire.")
-
-	else:
-    	print("Aucun username trouvé sans valeur dans la colonne cle.")
-
-	# Mettre à jour la colonne 'creation' de la table 'renomage' à 0
-	sql_update_creation = "UPDATE renomage SET creation = 0 WHERE ID = 1"
-	mycursor.execute(sql_update_creation)
-	mydb.commit()
-
-	# Fermer la connexion à la base de données
-	mydb.close()
-
-# Boucle infinie pour maintenir le script en écoute et l'exécuter toutes les 5 secondes
+# Boucle principale
 while True:
-	# Vérifie si la valeur de création de l'ID 1 est égale à 1
-	if check_creation_value():
-    	# Si c'est le cas, exécute le code de renommage et de mise à jour de la base de données
-    	execute_renaming()
+	print("Vérification des nouvelles clés...")
+    
+	# Obtenir les nouvelles clés depuis la dernière exécution
+	nouvelles_cles = obtenir_nouvelles_cles(dernier_id_traite)
+    
+	if nouvelles_cles:
+    	print(f"Nouvelles clés trouvées : {nouvelles_cles}")
 	else:
-    	print("La valeur de création de l'ID 1 dans la table 'renomage' n'est pas égale à 1. Le programme ne s'exécutera pas.")
-
-	# Attends 5 secondes avant la prochaine exécution
+    	print("Aucune nouvelle clé trouvée.")
+    
+	# Vérifier et créer les QR codes pour les nouvelles clés
+	for (id_cle, cle) in nouvelles_cles:
+    	creer_qr_code(cle)
+    	dernier_id_traite = max(dernier_id_traite, id_cle)
+    
+	# Attendre avant de vérifier à nouveau (par exemple, toutes les 5 secondes)
 	time.sleep(5)
