@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Configuration de la base de données
 db_config = {
-    'host': '192.168.47.249',
+    'host': '192.168.60.249',
     'user': 'root',
     'password': 'tssnadmin',
     'database': 'Projet'
